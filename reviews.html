@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수강생 후기 | 라이프취업그레이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black: #111111;
+    --gray-dark: #444444;
+    --gray-mid: #888888;
+    --gray-light: #f5f5f5;
+    --white: #ffffff;
+    --accent: #C8A96E;
+    --accent-light: #f5ede0;
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); color: var(--black); background: var(--white); line-height: 1.7; font-size: 16px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid #eeeeee; padding: 0 40px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 15px; font-weight: 600; color: var(--black); text-decoration: none; }
+  .nav-back { font-size: 13px; color: var(--gray-mid); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
+  .nav-back:hover { color: var(--black); }
+  .nav-cta {
+    background: var(--black); color: var(--white); padding: 8px 20px;
+    border-radius: 2px; font-size: 13px; font-weight: 500; text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 120px 40px 60px; max-width: 900px; margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; color: var(--accent); border: 1px solid var(--accent);
+    padding: 4px 12px; border-radius: 1px; margin-bottom: 24px; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: var(--serif); font-size: clamp(28px, 4vw, 44px);
+    font-weight: 300; line-height: 1.35; letter-spacing: -1px; margin-bottom: 20px;
+  }
+  .hero-sub { font-size: 15px; font-weight: 300; color: var(--gray-dark); margin-bottom: 48px; }
+
+  /* STATS */
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: #eeeeee; border: 1px solid #eeeeee;
+    max-width: 900px; margin: 0 auto 0;
+  }
+  .stat-item { background: var(--white); padding: 28px 32px; text-align: center; }
+  .stat-num { font-family: var(--serif); font-size: 36px; font-weight: 300; color: var(--black); line-height: 1; }
+  .stat-num span { font-size: 20px; color: var(--accent); }
+  .stat-label { font-size: 12px; font-weight: 300; color: var(--gray-mid); margin-top: 6px; }
+
+  /* TABS */
+  .tabs-wrap { max-width: 900px; margin: 60px auto 0; padding: 0 40px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #eeeeee; margin-bottom: 48px; }
+  .tab-btn {
+    padding: 14px 28px; font-size: 14px; font-weight: 400; font-family: var(--sans);
+    color: var(--gray-mid); background: none; border: none; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s;
+  }
+  .tab-btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 500; }
+  .tab-btn:hover { color: var(--black); }
+
+  /* REVIEW GRID */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .review-card {
+    background: var(--gray-light); padding: 28px 28px 24px; border-radius: 2px;
+    display: flex; flex-direction: column; gap: 12px;
+    transition: box-shadow 0.2s;
+  }
+  .review-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .review-card.highlight {
+    background: var(--accent-light); border-left: 3px solid var(--accent);
+    grid-column: 1 / -1;
+  }
+
+  .review-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .review-company {
+    font-size: 11px; font-weight: 500; letter-spacing: 1px;
+    color: var(--accent); text-transform: uppercase;
+    background: white; padding: 3px 10px; border-radius: 1px;
+  }
+  .review-type {
+    font-size: 11px; color: var(--gray-mid); font-weight: 300;
+  }
+  .review-date { font-size: 11px; color: var(--gray-mid); margin-left: auto; }
+
+  .review-title {
+    font-family: var(--serif); font-size: 15px; font-weight: 400; color: var(--black); line-height: 1.5;
+  }
+
+  .review-text {
+    font-size: 13px; font-weight: 300; color: var(--gray-dark); line-height: 1.9;
+    display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .review-card.highlight .review-text {
+    -webkit-line-clamp: unset; overflow: visible;
+  }
+
+  .review-toggle {
+    font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 500;
+    background: none; border: none; font-family: var(--sans); padding: 0; text-align: left;
+    margin-top: 4px;
+  }
+  .review-toggle:hover { text-decoration: underline; }
+
+  /* FORM SECTION */
+  .form-section {
+    max-width: 900px; margin: 80px auto 0; padding: 0 40px 100px;
+  }
+  .form-divider { height: 1px; background: #eeeeee; margin-bottom: 60px; }
+  .form-label { font-size: 11px; font-weight: 500; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+  .form-title {
+    font-family: var(--serif); font-size: clamp(22px, 3vw, 32px);
+    font-weight: 300; line-height: 1.4; letter-spacing: -0.5px; margin-bottom: 12px;
+  }
+  .form-sub { font-size: 14px; font-weight: 300; color: var(--gray-dark); margin-bottom: 40px; line-height: 1.7; }
+
+  .google-form-wrap {
+    background: var(--gray-light); border-radius: 2px; overflow: hidden;
+    border: 1px solid #eeeeee;
+  }
+  .google-form-wrap iframe { display: block; width: 100%; border: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 80px 20px 40px; }
+    .stats { grid-template-columns: 1fr; }
+    .tabs-wrap { padding: 0 20px; }
+    .tab-btn { padding: 12px 16px; font-size: 13px; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .review-card.highlight { grid-column: 1; }
+    .form-section { padding: 0 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">라이프취업그레이드</a>
+  <a href="index.html" class="nav-back">← 홈으로</a>
+  <a href="https://forms.gle/SRrHnDoXthWCfX917" target="_blank" class="nav-cta">코칭 신청하기</a>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:900px; margin:0 auto; padding:0 40px;">
+  <div class="hero" style="padding-left:0; padding-right:0;">
+    <span class="hero-tag">수강생 후기</span>
+    <h1>직접 경험한 분들의<br>솔직한 이야기입니다</h1>
+    <p class="hero-sub">모든 후기는 실제 수강생분들이 직접 작성하셨습니다. 수정 없이 원문 그대로입니다.</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<div style="max-width:900px; margin:0 auto; padding:0 40px;">
+  <div class="stats" style="margin:0;">
+    <div class="stat-item">
+      <p class="stat-num">40<span>+</span></p>
+      <p class="stat-label">누적 후기 수</p>
+    </div>
+    <div class="stat-item">
+      <p class="stat-num">100<span>+</span></p>
+      <p class="stat-label">코칭 기업 · 기관</p>
+    </div>
+    <div class="stat-item">
+      <p class="stat-num">100<span>%</span></p>
+      <p class="stat-label">실제 수강생 찐 후기</p>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('lecture')">무료 특강 후기 <span style="color:var(--accent); font-size:11px; margin-left:4px;">6</span></button>
+    <button class="tab-btn" onclick="switchTab('coaching')">코칭 후기 <span style="color:var(--accent); font-size:11px; margin-left:4px;">36</span></button>
+  </div>
+
+  <!-- 무료 특강 후기 -->
+  <div id="tab-lecture" class="tab-content active">
+    <div class="reviews-grid">
+
+      <div class="review-card highlight">
+        <div class="review-meta">
+          <span class="review-company">현대자동차 · 아모레퍼시픽</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.04.26</span>
+        </div>
+        <p class="review-title">취준 중에 여기저기서 들었던 모든 팁을 통틀어 가장 의미있는 내용이었습니다</p>
+        <p class="review-text">항상 급하게 면접을 준비하느라 산업/기업 분석하고 예상 질문에 대한 스크립트를 작성하는데만 급급해서 면접의 본질에 대한 생각을 하지 못했던 거 같아요. 근데 이번 특강을 통해서 면접에 대한 근본적인 생각을 다시 하게 됐고, 머리를 한 대 맞은 것처럼 관점이 바뀐 의미 있는 시간이었어요. 특강을 듣고 나니 오히려 지금 제 인생을 다시 한 번 돌아볼 수 있는 기회라고 생각하고, 처음으로 돌아가서 경험부터 확실하게 정리 해야겠다 싶어 지금 카페에 왔습니다 ㅎㅎ 오늘 1시간 반 정도 걸려서 왔는데, 그 시간이 아깝지 않았고 너무 뜻깊은 시간이었어요.</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">SK에코플랜트</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.06.07</span>
+        </div>
+        <p class="review-title">흔하게 볼 수 있는 취업강사와 차별점이 확실합니다</p>
+        <p class="review-text">면접의 본질에 대해 유튜브를 통해서도 물론 도움이 되었지만 무료특강을 통해 코치님이 얘기하고자 하는바를 보다 명확히 할 수 있었던 시간이었습니다. 어느 정도 깨닫게 되면 스스로 응용이 된다는 부분이 코치님의 가장 큰 차별점인것 같습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">반도체 · 설비직무</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.05.10</span>
+        </div>
+        <p class="review-title">이전까지는 예상질문-답변을 쓰는 연습을 해왔는데 실력이 늘지 않는 이유를 오늘 알 수 있었습니다</p>
+        <p class="review-text">역량에 대해 정의 내리고 강의해주시는 분을 처음 뵈었습니다. 영상에서는 구체적으로 어떻게 적용해야할지 어려웠지만, 강의를 통해 질문과 답, 경험을 연결지어 답변하는 것이 중요함을 깨달았습니다. 이번 특강 덕분에 다시 한번 방향을 잡을 수 있게 되어 정말 유익한 시간이었습니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">보험회사 · 손해사정</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.05.11</span>
+        </div>
+        <p class="review-title">잘못 가지고 있던 생각들에 대해 돌아볼 수 있었던 아주 소중한 시간이었습니다</p>
+        <p class="review-text">기존에는 역량을 너무 거창한 것이라고 생각했고, 과연 내가 역량이 있나? 라는 생각을 하며 자존감이 많이 떨어졌었는데 특강을 듣고 역량에 대해 이해를 높이면서 나도 나름 역량이 있는 사람이라는 것을 알게 되면서 자신감이 생겼습니다! 우연히 선생님의 강의를 유튜브에서 접하고, 좋은 기회로 특강까지 듣게된 것이 올해있어 가장 큰 행운이 아니었나 싶습니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">반도체 · 유통 영업</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.04.26</span>
+        </div>
+        <p class="review-title">그 어디에서도 들을 수 없는 역량의 본질에 대해서 새롭게 알게 되었습니다</p>
+        <p class="review-text">이번 특강으로 남들 하는방식 따라하다 취업은 점점 더 돌아갈 수 밖에 없다는 걸 다시한번 확신할 수 있었습니다. 두괄식 수치화에 끼워 맞추는 것이 아닌 나 스스로를 자신감 있게 세일즈하는 방법을 배웠고 이것이 앞으로의 취업준비에 도움이 될거같습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">유통 · 정유업계</span>
+          <span class="review-type">무료 특강</span>
+          <span class="review-date">2026.04.26</span>
+        </div>
+        <p class="review-title">면접만 달라지는 게 아니라 자기 자신을 보는 눈이 달라졌습니다</p>
+        <p class="review-text">취준을 시작할 때만 해도 가고 싶은 기업에 대한 열정이 있고 자신감이 있었는데 취준 기간이 길어지면서 간절함이 생겨 '나를 있는 그대로 보여준다'는 태도가 점차 사라진 것 같습니다. 1시간 가량의 설명을 듣고서야 이해되는 깊이 있는 이야기를 해주셨는데, 취준 중에 여기저기서 들었던 모든 팁을 통틀어 가장 의미있는 내용이었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 코칭 후기 -->
+  <div id="tab-coaching" class="tab-content">
+    <div class="reviews-grid">
+
+      <div class="review-card highlight">
+        <div class="review-meta">
+          <span class="review-company">국민건강보험공단 최종합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2025.06.04</span>
+        </div>
+        <p class="review-title">진작 선생님의 코칭을 들었으면 지금까지 오지는 않았을텐데 ㅠㅠ</p>
+        <p class="review-text">편도 2시간 반 거리를 코칭을 위해 다니면서 이번에는 진짜 합격하고야 만다는 각오로 선생님이 가르쳐 주신 면접의 방향을 모두 흡수하려고 노력했어요. 그동안 유튜브나 공기업 면접 코칭 하시는 분들 무료 강의도 들어봤는데 솔직히 무슨 말인지 감이 오지 않더라구요. 근데 선생님은 제가 어떻게 면접을 준비해야 하는지 자세한 예시를 들어서 이해 시켜주시고, 면접에 대한 틀을 깰 수 있도록 도와주셨습니다. 선생님 응원과 도움 덕분에 해낼 수 있었습니다. 역량 충분하다는 말씀도 항상 감사했어요!!!!</p>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">에어서울 최종합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.09.16</span>
+        </div>
+        <p class="review-title">항공사의 꿈을 이루기까지 7년, 10번의 도전 끝에 성공했습니다</p>
+        <p class="review-text">30이라는 나이, 야간 학교라는 학벌, 3.5를 겨우 넘는 낮은 학점으로 "나는 안되는 건가"라는 생각에 지난날들을 후회하기도 했지만, 선생님의 수업 내용과 피드백을 온전히 저의 것으로 만들려고 노력했습니다. 나라는 사람이 어떤 사람인지를 알게 되니 이전 면접에서는 상상도 못 했던, 옆 지원자와 차별화를 만들어 낼 수 있었고 면접관들에게 저의 이야기를 자신감 있게 말할 수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">현대자동차 최종합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.04.30</span>
+        </div>
+        <p class="review-title">면접의 본질, 방향성, 진정성의 의미를 온전히 이해할 수 있었습니다</p>
+        <p class="review-text">나름 면접 경험이 많고 말을 잘한다고 자신했지만 최종 탈락의 실패를 여러 차례 겪으며 변화가 필요하다고 생각하였습니다. 성훈 컨설턴트님을 만난 후로 면접의 본질, 방향성, 진정성의 의미를 온전히 이해할 수 있었습니다. 나만의 경쟁력을 갖추기 위해서는 역량을 보여주어야 하고 그것을 제대로 표현하기 위해서는 경험 속에서 우러나온 가치관과 생각임을 깨닫게 해주셨습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">소방공무원 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.07.10</span>
+        </div>
+        <p class="review-title">짜여진 틀에 짜여진 대답이 아닌 진짜 나로서 대답을 하게끔 만들어준 선생님</p>
+        <p class="review-text">사실 전 면접 컨설팅 이라고 해서 짜여진 대본에 정해진 답변을 얻고 싶었습니다. 하지만 선생님은 그런 짜여진 대본에 짜여진 대답은 면접 뿐만 아니라 앞으로에 대해서도 그렇게 도움이 되지 않는다고 말씀해주셨고, 수업 끝까지 저 스스로 이해하고 생각하며 대답을 할 수 있도록 이끌어주셨습니다! 면접에 대해 배울 수도 있었고 내가 알지 못했던 내 자신에 대해서도 알 수 있었던 소중하고 값진 시간이였습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">어플라이드머트리얼즈</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.09.07</span>
+        </div>
+        <p class="review-title">면접 후에는 정말 후련하고 뿌듯하더라구요!</p>
+        <p class="review-text">지난 3개월 간, 5번 연속의 면접 탈락을 경험하며 제가 준비한 면접의 방향성이 잘못되지 않았나 라는 생각이 들었습니다. 컨설팅 자체가 처음이였는데 너무너무 만족한 시간이였습니다! 저에대해 깊이 있게 탐구할 수 있는 시간이였고, 그만큼 깊이 와닿고 머리속에 남는 것이 정말 많았어요. 이번 면접에서는 면접관분들의 끄덕임도 볼 수 있었고, 면접 후에는 정말 후련하고 뿌듯하더라구요!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">육군 군무원 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.10.14</span>
+        </div>
+        <p class="review-title">필기 커트라인으로 면접 뒤집기 성공!</p>
+        <p class="review-text">필기를 딱 커트라인으로 합격했기 때문에 면접에 모든 것을 쏟아야겠다고 생각했습니다. 수업을 듣기 전에는 답변을 무조건 모범적인 틀 안에 맞춰서 좋은 톤과 정돈된 단어와 문장을 사용해야 한다는 강박감이 있었습니다. 하지만 겉으로 잘 포장된 답변보다는 조금 말을 더듬더라도 진심을 담고, 하나의 경험을 통해서 어떠한 깨달음을 얻었는지를 정확하게 제시할 수 있도록 많이 이끌어주셨습니다. 수업이 진행될수록 면접 수업인데 인생 수업을 받는 것과 같은 느낌이였어요.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">서교공 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.02.19</span>
+        </div>
+        <p class="review-title">필기컷으로 면접뒤집기 성공</p>
+        <p class="review-text">공무원면접 외 면접경험이 없었고 면접준비기간이 짧아서 컨설팅의 도움을 받았습니다. 단순히 스크립트짜고 외워서 말하는 방식이 아닌 저의 역량과 생각을 대화식으로 잘 표현해내는것을 중점으로 하고 계속해서 제가 가진 경험과 역량을 생각하게하고 끄집어내주셨습니다. 조성훈 강사님의 컨설팅을 통해 면접 외 적으로도 앞으로 인생을 살아가는데 많은 자신감을 얻게 되어서 정말 감사할 따름입니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">코레일 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.04.18</span>
+        </div>
+        <p class="review-title">처음해보는 면접에서 컨설팅받고 합격했습니다!</p>
+        <p class="review-text">말주변이 없고 처음 필기에 합격하여 처음보는 면접을 위해 컨설팅을 신청하게 되었습니다. 답변을 할 때 자신의 역량이 드러나야 하는데 전혀 드러나지 않는다고 솔직한 피드백을 해주셨습니다. 면접의 원리, 답변을 통해 역량을 드러내는 방법 등을 강의하시며 답을 정해놓고 외워서 답변하는 것이 아닌 스스로 답변을 만들어가는 방향으로 진행하셨습니다. 이러한 답변의 기술이 실제 면접장에서 그대로 적용할 수 있었습니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">한국공항공사</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.12.11</span>
+        </div>
+        <p class="review-title">열쇠는 당신에게 있다</p>
+        <p class="review-text">면접이 두려워 필기를 가고 싶지 않아지기도 했어요. 그 때 한번 속는 셈 치고 컨설팅을 받아보자 마음먹었고, 제 인생에 있어 제일 큰 행운이 되었습니다. 저의 경험에서 저의 태도와 생각, 가치관을 찾아주십니다. 면접 합격을 위해서 뭘 더 해야 할 지 항상 고민했었는데, 사실 열쇠는 제가 이미 가지고 있고 아직 찾지 못했을 뿐이라는 것을 깨달았습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">코레일 관광개발 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.06.03</span>
+        </div>
+        <p class="review-title">줄줄이 외우는 면접연습이 아닌 진짜 경험을 토대로</p>
+        <p class="review-text">면접준비기간이 불과 2일밖에 없었는데도 정말 많은 상황을 상정한 질문과 피드백으로 단기간에 면접을 성공할 수 있지 않았을까 생각됩니다. 실제 면접장에서 4:4 면접이었는데 이걸 제가 뚫을줄은 꿈에도 몰랐습니다. 선생님하고 연습하면서 실수하고 피드백 받았던 부분을 다른 면접자가 똑같이 실수하는것을 보고 참 다행이다 생각했습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">화장품 제조업 · 재무회계</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2025.03.22</span>
+        </div>
+        <p class="review-title">저도 몰랐던 제 자신에 대해 알게해준 고마운 수업입니다</p>
+        <p class="review-text">첫수업은 3시간 원데이 클래스식으로 진행을 하였는데 첫수업 임에도 틀이 잡히고 제 자신에 대해 조금씩 알아가는게 보여 바로!! 추가 결제 하고 총 7시간의 수업을 들었습니다!! 수업을 들으면서 정리가 되가는 모습도 뿌듯하고 처음에 어려웠던 생각 정리가 하다보니 성장하는게 보이고 재밌어지기까지 하더라구요.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">영상 프로덕션 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.11.23</span>
+        </div>
+        <p class="review-title">마치 심리상담 받는 느낌도 받았고 힐링과 치유가 되는 시간이었습니다</p>
+        <p class="review-text">그냥 면접 연습이 아니라 제가 어떠한 사람인지 찾아가 줄 수 있는 가이드가 되어주셨고 그걸 통해 나의 장점과 단점도 심도 깊게 찾아가며 마치 심리상담 받는 느낌도 받았고 힐링과 치유가 되는 시간도 되었습니다. 정말 짧은 시간이였습니다만 하나하나씩 저의 장점과 경험들을 이야기 나누며 점차 제가 어떠한 사람이였는지 깨닭게 되는 시간이 되었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">한국연수재단 인턴 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.11.17</span>
+        </div>
+        <p class="review-title">덕분에 버벅거림 잡고 합격 ㅠㅠ</p>
+        <p class="review-text">원래 긴장 엄청 많이 하고 자주 버벅거려는데, 선생님의 컨설팅과 코칭 덕분에 긴장을 다스리고 편안히 면접 마치고 합격해 인턴으로 일할 수 있었습니다. 선생님의 코칭 정말 강추드립니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">포스코</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.04.14</span>
+        </div>
+        <p class="review-title">면접날이 되어 1차 면접을 진행하는 도중에 1차는 이미 붙었다고 생각될 정도로 성장했습니다</p>
+        <p class="review-text">단순 암기가 아닌 어떤 상황에서도 답변이 가능하고 면접관들을 이해시킬 수 있을지에 대한 근본적인 부분을 확실하게 배웠습니다. 이를 통해 단순히 이 기업이 아닌 다른 곳의 면접이나 일상생활에서도 남을 설득시킬 수 있는 말하기 기술을 익힐 수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">한국도로공사</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.09.27</span>
+        </div>
+        <p class="review-title">저를 있는 그대로 표현하고자 연습하다 보니 오히려 자신감이 생겼습니다</p>
+        <p class="review-text">면접경험이 전혀 없었기 때문에 뭐부터 시작해야 할지 감도 안잡혔습니다. 저는 원래 말보다는 글이 편한 사람이고 자신감이 부족해서 답변 태도에 대한 걱정도 많았습니다. 하지만 이러한 저의 특성을 굳이 바꾸지 않아도 충분히 면접에서 어필할 수 있다는 것을 알려주셔서 상당히 도움이 되었습니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">한국철도공사 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.04.18</span>
+        </div>
+        <p class="review-title">면접 준비한다면 무조건 추천합니다!!</p>
+        <p class="review-text">이틀동안 과정에서 컨설턴트님께서 많은 도움을 주셨고, 저도 얻어 가는 것이 정말 많았습니다. 먼저 비언어적인 요소부터 하나하나 잡아주셨고 상황면접, 인성면접에서 이루어질 답변 방향성을 잡아주셨습니다. 컨설팅 받고 준비하면서 면접이 그렇게 어렵지 않다라는 것을 느꼈습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">코레일 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.12.27</span>
+        </div>
+        <p class="review-title">성훈쌤 덕분에 코레일 합격했습니다</p>
+        <p class="review-text">항상 면접을 혼자 준비했었는데 이번에 소중한 면접기회가 생기게되어 처음 컨설팅을 받아보게되었습니다. 전 면접을 발표처럼 하는 스타일이었는데, 내가 어떤사람이고 어떤 생각을 가지고 어떻게 행동하는지 세세하게 전달할 수 있게끔 근본적으로 면접 방법을 알려주신 방법이 정말 좋았고 많은 깨달음을 얻을 수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">부산시교육청 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.11.04</span>
+        </div>
+        <p class="review-title">면접 당일 백지 상태에서도 차분하게 말을 이어나가는 자신에 놀랬습니다</p>
+        <p class="review-text">모든걸 알려주기보단 할수 있는 힘을 키워주셨고 힘을 많이 얻었어요. 사실 면접에 당장 합격하는것보단 면접을 잘 보는 사람이 되고 싶어 시작했는데 합격까지 하게되어 더없이 기쁩니다. 배운 내용을 잘 활용해 앞으로도 나에 대한 말하기에 잘 활용하겠습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">농협은행 · 농협경제지주</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.10.06</span>
+        </div>
+        <p class="review-title">자기 자신을 알아가는 과정</p>
+        <p class="review-text">수업 과정에서 자기 본인만의 가치관과 생각 그리고 그 생각에 대한 과정에 배울 수 있는 수업이었습니다. 이게 바로 자기 자신의 역량이라는 점을 깨달았습니다. 한 번도 이런 방법으로 가르침을 받아 보지 않았던 것 같습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">에어로케이</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.06.20</span>
+        </div>
+        <p class="review-title">나라는 사람이 누구인지 알게 된 강의였습니다!</p>
+        <p class="review-text">단순히 자소서와 스크립트를 작성해주는 강의를 듣고 싶지 않았습니다. 수업에서는 선생님과 경험을 정리하고 그 경험에서 인사이트를 뽑아내는 연습을 했습니다. 많이 위축되어 있었는데 제가 모르고 있던 역량을 강조해주셔서 힘이 됐고, 나를 알게 되니 커리큘럼이 끝나고는 스크립트 없이도 돌발 질문에 답변할 수 있게 되었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">국민건강보험공단</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.08.06</span>
+        </div>
+        <p class="review-title">돈 값 하는 면접 강의</p>
+        <p class="review-text">서류부터 시작해 필기를 거쳐 어렵게 마지막 관문인 면접을 처음 만나면, 어떻게 준비해야 할 지 답이 안 보입니다. 저는 돈 값 하는 성훈 선생님과 함께 하는 것을 추천합니다. 어떤 질문에도 회사가 원하는 직무 역량을 진정성 있는 체계적 구조로 말할 수 있어야 합니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">××도시개발공사 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.11.23</span>
+        </div>
+        <p class="review-title">면접의 갈피를 못잡는다면 컨설팅하세요</p>
+        <p class="review-text">직장을 다니던 중 에피소드나 경험은 있지만 정리가 안됐고, 면접을 어떻게 준비할지 정말 막막했어요. 컨설팅을 통해서 면접에 대한 감을 익히게 됐고 나의 강점과 약점을 객관적으로 분석할 수 있었어요. 전문가가 왜 전문가인지 알 것 같아요.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">현대자동차 · 생산직</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.03.30</span>
+        </div>
+        <p class="review-title">처음 면접을 준비하시는 분들도, 계속 준비하셨던 분들도 추천합니다!</p>
+        <p class="review-text">마지막 최종 면접을 앞두고 신청하게 되었는데 어떤 식으로 준비를 해야 하는지 답변은 어떤 방식들로 해야 좋은지에 대해 꼼꼼히 체크해주시고 알려주셨습니다. 덕분에 처음 면접을 준비했었던 모습보다 월등히 나아진 모습으로 최종 면접을 볼 수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">서교공 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.02.19</span>
+        </div>
+        <p class="review-title">완전추천합니다~</p>
+        <p class="review-text">다른학원을 다녔음에도 PT에 대한 자신이 없어서 신청하게 됐어요. PT면접에 대한 도움을 많이 받았을 뿐만 아니라 인성면접에 대해서도 많은 도움을 받았습니다. 짜여진 대본이 아닌 제 경험을 토대로 하다보니 더욱 자연스럽게 대답할수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">면접 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2024.11.04</span>
+        </div>
+        <p class="review-title">한 번 깨달음을 얻고 알을 깨는 순간, 어떤 질문의 답도 틀이 잡힙니다</p>
+        <p class="review-text">제일 좋았던 부분은, 단순히 시중의 컨설팅이나 유튜브처럼 면접질문에 대한 이상적인 답변을 알려주는 것이 아니라 제 역량과 경험을 최대한 끄집어내어 진짜 내 답변을 만들어주시는 것이었습니다. 한 번 깨달음을 얻고 알을 깨는 순간, 어떤 질문에서의 답을 어떤 식으로 해야 할 지에 대해 틀이 잡힌달까요.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">자소서 컨설팅</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.07.11</span>
+        </div>
+        <p class="review-title">그저 공장식 자소서가 아닌, 내 경험을 살린 나만의 자소서</p>
+        <p class="review-text">제 경력이 지원하는 직무와 조금 맞지않아 경력내용을 자소서에 담을 수 있을까 걱정하였는데, 컨설턴트님이 도와주셔서 정말 좋은 자소서를 작성할 수 있게 되었습니다. 추후 다른 기업 자소서도 충분히 혼자 작성할수 있을정도로 팁이나 글쓰기 방향을 중점으로 잡아주셔서 정말 감사드립니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">경험분석 컨설팅</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.10.08</span>
+        </div>
+        <p class="review-title">경험분석 컨설팅 정말 추천해드리고 싶습니다</p>
+        <p class="review-text">경험분석 컨설팅에서 피드백을 주고받으며 제가 가진 경험들을 자세히 보게 되었고 역량과 의미를 찾도록 이끌어주셔서 감사했습니다! 덕분에 하나의 경험이 만능 경험처럼 바뀌는 경험을 했고 컨설팅 후, 제 경험에 대해 이전보다 자신이 생겼습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">취업 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.12.20</span>
+        </div>
+        <p class="review-title">합격하고 후기를 쓸 수 있게 되어서 기쁩니다 :)</p>
+        <p class="review-text">경험 정리 후 이를 바탕으로 자소서를 작성하다 보니, 면접에서 자소서와 관련되어 질문받았을 때도 이전보다 로봇 같지 않게 저의 이야기를 잘 할 수 있었던 것 같습니다. 컨설팅이 고민이라면, 경험 컨설팅 고민할 것 없이 선택하라고 추천해 드리고 싶습니다 ^^</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">단기간 합격</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.09.29</span>
+        </div>
+        <p class="review-title">감동받아 적는 후기글입니다</p>
+        <p class="review-text">소설같이 부풀린 '자소설'이 아닌, 제 경험을 기반으로 어떤 역량이 있고, 노력을 하였는지 대신 찾아내주시는 모습에 너무 감사했습니다. 글자수 채우는 작성이 아닌 제 자소서 작성역량을 생각해주시는 모습에 한 번 더 감동이었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">사무직 컨설팅</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.10.11</span>
+        </div>
+        <p class="review-title">제 주변인이 도움을 받고 싶다면 꼭 추천하고 싶을만큼 좋습니다!</p>
+        <p class="review-text">성훈님께 자소서 컨설팅을 받고 난 후 이렇게까지 자세하게 물음으로써 제가 느낄 수 있는 모든 느낌을 떠올릴 수 있었습니다. 자소서 컨설팅을 잘해주신 성훈님께 진심으로 감사 말씀드립니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">막막한 취업준비</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.04.10</span>
+        </div>
+        <p class="review-title">막막한 취업준비에 길을 터주는 컨설팅!!</p>
+        <p class="review-text">가장 좋았던 점은 제 역량과 경험을 구체적으로 표현할 수 있게 이끌어 주신다는 점입니다. 답을 정해서 '자소서에 이렇게 쓰세요.'가 아닌 제가 생각하고 쓸 수 있도록 유도하는 방식으로 진행해주셔서 모든 자소서 항목 뿐만 아니라 면접까지 한 번에 대비할 수 있었습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">현대자동차 · 생산직</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.05.11</span>
+        </div>
+        <p class="review-title">단순한 외워서 하는 면접이 아닌 경험을 정제하는 과정</p>
+        <p class="review-text">외우는 것보다 표면적으로 경험을 위로 끌어올려 주셨고 기본적이고 중요한 질문들로 한 가지 주제로 다양한 질문들이 연결될 수 있다는 것을 배우고 상당히 농밀하고 품격있게 경험들을 정리해 나갈 수 있도록 길잡이가 되어주셨습니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">단기간 성장</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2023.03.16</span>
+        </div>
+        <p class="review-title">단기간에 성장시켜주십니다</p>
+        <p class="review-text">이미 자신감이 낮아질대로 낮아진 저에게 끝까지 할 수 있다고 긍정적인 말씀을 아끼지 않으시며 격려해주셔서 저도 할 수 있다는 마음가짐이 절로 생기더라구요. 단순히 글을 완성하는 데에만 중점을 두시는게 아니라 제가 스스로 어떤 사람인지를 더 잘 들여다보게 도와주시는 쌤입니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">면접 자신감 회복</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.12.25</span>
+        </div>
+        <p class="review-title">면접에 자신감을 불어넣어주는 컨설팅</p>
+        <p class="review-text">자신의 이야기를 체계적으로 머릿속에 그려넣을 수 있도록 해주었습니다. 면접 전날 자신없어하던 저에게 누구보다 큰 격려를 해주고 기운을 불어넣어주셨어요. 친구 가족도 없이 혼자 타지에서 지내고 있는 저에게는 정말로 큰 힘이 되었던 순간이었어요.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">편안한 컨설팅</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.12.19</span>
+        </div>
+        <p class="review-title">편안한 성훈 쌤 덕분에 좋았습니다!</p>
+        <p class="review-text">작은 행동, 경험까지 어떻게 받아들임에 따라 다른지 알려주신 성훈쌤 덕분에 경험정리를 잘 하게 되었습니다! 정말 친절하시고 편안하게 다가갈 수 있어서 좋았던거 같아요ㅎㅎ 첫 면접준비였지만, 정말 많은것을 배울 수 있게 되었고 도움이 정말 많이 되었습니다!</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+      <div class="review-card">
+        <div class="review-meta">
+          <span class="review-company">2년 인연</span>
+          <span class="review-type">1:1 코칭</span>
+          <span class="review-date">2022.10.13</span>
+        </div>
+        <p class="review-title">정말 정말 추천하는 성훈 컨설턴트님!!</p>
+        <p class="review-text">성훈컨설턴트님과 벌써 2년 가까이 인연이 닿았네요! 자소서 소재잡는 것 부터 면접때 말할 수 있을 정도로 완성도 높은 자소서를 만들어주셨어요! 정말 믿음이 가서 계속계속 찾아 뵙는 컨설턴트님입니다.</p>
+        <button class="review-toggle" onclick="toggleReview(this)">더보기</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FORM SECTION -->
+<div class="form-section">
+  <div class="form-divider"></div>
+  <p class="form-label">후기 작성</p>
+  <h2 class="form-title">수강 후기를<br>남겨주세요</h2>
+  <p class="form-sub">
+    솔직한 후기가 다른 취준생분들에게 큰 힘이 됩니다.<br>
+    작성해 주신 후기는 홍보 목적으로 활용될 수 있습니다.
+  </p>
+  <div class="google-form-wrap">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSf_placeholder/viewform?embedded=true"
+      width="100%"
+      height="800"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0">
+      로딩 중...
+    </iframe>
+  </div>
+</div>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleReview(btn) {
+  const textEl = btn.previousElementSibling;
+  const isExpanded = textEl.style.webkitLineClamp === 'unset' || textEl.style.overflow === 'visible';
+  if (isExpanded) {
+    textEl.style.webkitLineClamp = '6';
+    textEl.style.overflow = 'hidden';
+    textEl.style.display = '-webkit-box';
+    btn.textContent = '더보기';
+  } else {
+    textEl.style.webkitLineClamp = 'unset';
+    textEl.style.overflow = 'visible';
+    textEl.style.display = 'block';
+    btn.textContent = '접기';
+  }
+}
+</script>
+
+</body>
+</html>

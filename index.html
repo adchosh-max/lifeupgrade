@@ -86,10 +86,10 @@
 
   /* HERO */
   .hero {
-    min-height: 100vh;
+    min-height: auto;
     display: flex;
     align-items: center;
-    padding: 100px 40px 80px;
+    padding: 140px 40px 60px;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -179,7 +179,7 @@
     width: 60px;
     height: 1px;
     background: var(--accent);
-    margin: 60px 0 0;
+    margin: 36px 0 0;
   }
 
   /* SECTION COMMON */
@@ -589,7 +589,7 @@
     nav { padding: 0 20px; }
     .nav-links { display: none; }
 
-    .hero { padding: 80px 20px 60px; }
+    .hero { padding: 100px 20px 50px; }
     section { padding: 60px 20px; }
 
     .philosophy-grid { grid-template-columns: 1fr; gap: 32px; }
@@ -633,9 +633,9 @@
       기계처럼 준비하는 방식이 아닌, 당신만의 진짜 스토리를 찾도록 돕겠습니다.
     </p>
     <div class="hero-btns">
-      <a href="#apply" class="btn-primary">코칭 신청하기</a>
-      <a href="#lecture" class="btn-secondary">무료 특강 신청</a>
-      <a href="reviews.html" class="btn-secondary">수강생 후기</a>
+      <a href="#apply" class="btn-primary" style="text-align:center; min-width:160px;">코칭 신청하기</a>
+      <a href="#lecture" class="btn-secondary" style="text-align:center; min-width:160px;">무료 특강 신청</a>
+      <a href="reviews.html" class="btn-secondary" style="text-align:center; min-width:160px;">수강생 후기</a>
     </div>
     <div class="hero-divider"></div>
   </div>
@@ -682,56 +682,133 @@
 <section id="programs" class="fade-in">
   <p class="section-label">코칭 상품 안내</p>
   <h2 class="section-title">나에게 맞는<br>코칭을 선택하세요</h2>
-  <div class="programs-grid">
+
+  <!-- 1, 2번 -->
+  <p style="display:inline-block; font-size:11px; font-weight:600; color:var(--gray-dark); background:var(--gray-light); padding:5px 14px; border-radius:2px; margin-bottom:16px; letter-spacing:1.5px; text-transform:uppercase;">Beginning · 시작하기</p>
+  <div class="programs-grid" style="margin-bottom:20px;">
     <div class="program-item">
       <div>
-        <p class="program-name">면접 멘탈 디톡스</p>
-        <p class="program-desc">탈락 원인 분석 + 합격 스토리 발굴</p>
+        <p class="program-name">① 불합격 원인 분석</p>
+        <p class="program-desc">자기소개서 · 면접 복기본 분석 (온라인 보고서 + 간단 설명 전화)</p>
         <p class="program-time">1시간</p>
       </div>
       <div class="program-price">
-        <p class="program-price-main">8만원</p>
+        <p class="program-price-main">3.9만원</p>
       </div>
     </div>
+
     <div class="program-item">
       <div>
-        <p class="program-name">면접 이해도 높이기</p>
-        <p class="program-desc">면접의 구조와 심리 이해 (강의 중심)</p>
-        <p class="program-time">2시간</p>
+        <p class="program-name">② 면접 준비 방향성 설정 이론 강의</p>
+        <p class="program-desc" style="color:var(--gray-mid); font-size:12px; margin-bottom:4px;">〈면접이란?〉</p>
+        <p class="program-desc">면접의 구조와 역량 이해 (집단 강의)</p>
+        <p class="program-time" style="color:var(--accent); font-weight:500;">현재 무료 특강으로 진행 중 · 추후 유료 전환됩니다</p>
       </div>
       <div class="program-price">
-        <p class="program-price-main">12만원</p>
-      </div>
-    </div>
-    <div class="program-item">
-      <div>
-        <p class="program-name">면접 빅 쓰리 코칭</p>
-        <p class="program-desc">1분 자기소개, 지원동기, 직무역량 집중 코칭</p>
-        <p class="program-time">2시간</p>
-      </div>
-      <div class="program-price">
-        <p class="program-price-main">15만원</p>
-      </div>
-    </div>
-    <div class="program-item" style="background: var(--accent-light);">
-      <div>
-        <span class="program-badge">Premium</span>
-        <p class="program-name">면접 본질 코칭</p>
-        <p class="program-desc">통합 코칭 베이직 (심화 기초) · 트레이닝 추가 가능 (2시간 단위)</p>
-        <p class="program-time">7시간</p>
-      </div>
-      <div class="program-price">
-        <p class="program-price-main">55만원</p>
-        <p class="program-price-sub">트레이닝 추가 +12만원/2h</p>
+        <a href="#lecture" class="btn-secondary" style="font-size:12px; padding:8px 16px;">자세히 알아보기</a>
       </div>
     </div>
   </div>
-  <div style="margin-top:20px; background:var(--accent-light); border-left:3px solid var(--accent); padding:20px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
-    <p style="font-size:14px; font-weight:400; color:var(--gray-dark); line-height:1.7;">
-      🎉 <strong style="color:var(--black);">현재 할인 이벤트 진행 중입니다.</strong><br>
-      정확한 할인가 및 상담은 카카오톡으로 편하게 문의해 주세요.
+
+  <p style="display:inline-block; font-size:11px; font-weight:600; color:var(--gray-dark); background:var(--gray-light); padding:5px 14px; border-radius:2px; margin-bottom:16px; letter-spacing:1.5px; text-transform:uppercase;">Core · 핵심 과정</p>
+  <div style="margin: 0 0 32px;">
+    <p style="font-size:14px; font-weight:300; color:var(--gray-dark); line-height:1.9; margin-bottom:8px;">
+      아래는 면접 준비 시 반드시 거쳐야 할 필수 과정을 세분화한 것으로, 본인에게 꼭 필요한 부분을 맞춤형으로 신청하실 수 있습니다.
     </p>
-    <a href="http://pf.kakao.com/_JZyCxj" target="_blank" class="btn-primary" style="white-space:nowrap; flex-shrink:0;">할인 문의하기</a>
+    <p style="font-size:14px; font-weight:300; color:var(--gray-dark); line-height:1.9; margin-bottom:8px;">
+      다만, 핵심 과정은 〈② 면접 이론 강의〉 수강을 하셔야 원활한 진행이 가능합니다. 이론 강의 미수강 시에는 압축 이론 강의 1시간(+3.9만원)이 필수로 추가됩니다.
+    </p>
+    <p style="font-size:14px; font-weight:500; color:var(--black); line-height:1.9;">
+      2개 과정 이상 신청 시 묶음가로 책정됩니다.
+    </p>
+  </div>
+
+  <!-- 대분류 1: 나에 대해 정리하는 과정 -->
+  <p style="font-size:13px; font-weight:500; color:var(--black); margin-bottom:14px; letter-spacing:0.3px;">📍 나에 대해 정리하는 과정</p>
+  <div class="programs-grid" style="margin-bottom:32px;">
+    <div class="program-item">
+      <div>
+        <p class="program-name">a. [경험정리] My Story</p>
+        <p class="program-desc">내 대표 경험 3가지 정리하기 — 경험을 완전히 해체 · 분석하여 면접 활용법을 익히는 과정 (온/오프라인)</p>
+        <p class="program-time">2시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">13.8만원</p>
+        <p class="program-price-sub">묶음가 11.8만원</p>
+      </div>
+    </div>
+
+    <div class="program-item">
+      <div>
+        <p class="program-name">b. [이력정리] Timeline</p>
+        <p class="program-desc">살아온 과정 정리하기 — 성향 · 가치관 · 진로를 함께 파악하는 과정</p>
+        <p class="program-time">2시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">13.8만원</p>
+        <p class="program-price-sub">묶음가 11.8만원</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 대분류 2: 면접 답변으로 연결하는 과정 -->
+  <p style="font-size:13px; font-weight:500; color:var(--black); margin-bottom:14px; letter-spacing:0.3px;">📍 면접 답변으로 연결하는 과정</p>
+  <div class="programs-grid" style="margin-bottom:32px;">
+    <div class="program-item">
+      <div>
+        <p class="program-name">c. [경험류 질문 대비] 도·갈·협 3대장 끝내기</p>
+        <p class="program-desc">도전 · 갈등해결 · 협업, 면접 빈출 질문 3대장을 경험부터 답변까지 완성</p>
+        <p class="program-time">2시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">13.8만원</p>
+        <p class="program-price-sub">묶음가 11.8만원</p>
+      </div>
+    </div>
+
+    <div class="program-item">
+      <div>
+        <p class="program-name">d. [기업분석] 지원동기 완벽 통찰 <span style="font-size:11px; color:var(--accent);">★코칭 해본 사람만 아는 찐 과정</span></p>
+        <p class="program-desc">면접 준비의 80%를 차지하는 지원동기, 함께 찾아가는 과정</p>
+        <p class="program-time">2시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">13.8만원</p>
+        <p class="program-price-sub">묶음가 11.8만원</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 대분류 3: 실전 대비하기 -->
+  <p style="font-size:13px; font-weight:500; color:var(--black); margin-bottom:14px; letter-spacing:0.3px;">📍 실전 대비하기</p>
+  <div class="programs-grid" style="margin-bottom:32px;">
+    <div class="program-item">
+      <div>
+        <p class="program-name">e. 실전 모의면접 & 피드백 트레이닝</p>
+        <p class="program-desc">실전처럼 답변하고 즉시 피드백, 비언어적 태도 교정까지 포함</p>
+        <p class="program-time">1시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">6.9만원</p>
+        <p class="program-price-sub">묶음가 5.9만원</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 올인원 -->
+  <div class="programs-grid">
+    <div class="program-item" style="background: var(--accent-light);">
+      <div>
+        <span class="program-badge">All Premium</span>
+        <p class="program-name">프리미엄 올인원 코칭</p>
+        <p class="program-desc">a~e 전 과정 + 이론 강의 포함된 완전판 통합 코칭</p>
+        <p class="program-time">10시간</p>
+      </div>
+      <div class="program-price">
+        <p class="program-price-main">54만원</p>
+        <p class="program-price-sub">무료특강 수강자 50만원</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -743,9 +820,9 @@
     <p class="free-tag">무료 특강</p>
     <h3 class="free-title">역량이 없는 게 아니라<br>방향이 틀린 겁니다</h3>
     <p class="free-desc">
-      매월 첫째 주·셋째 주 일요일<br>
+      집단 강의 형식 · 매월 첫째 주·셋째 주 일요일<br>
       회차당 선착순 8명 · 송파나루역 인근 오피스<br><br>
-      본 무료 특강은 이벤트성으로 운영되며 추후 유료 전환될 수 있습니다.
+      <strong style="color:var(--white);">본 무료 특강은 이벤트성으로 운영되며, 추후 반드시 유료로 전환됩니다.</strong>
     </p>
   </div>
   <div class="free-schedule">
